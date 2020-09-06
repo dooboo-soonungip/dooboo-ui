@@ -23,10 +23,11 @@ const StyledTitle = styled.Text`
 `;
 
 const StyledView: any = styled.View`
-  margin: 20px;
-  width: 100px;
-  height: 100px;
-  background-color: gray;
+  margin : 50px;
+  width : 150px;
+  height : 150px;
+  background-color : black;
+  border-radius: 20;
 `;
 
 const Badge1 = (): React.ReactElement => {
@@ -53,13 +54,24 @@ const Badge1 = (): React.ReactElement => {
               <StyledView>
                 <Badge
                   opacityVisible={false}
-                  color="blue"
+                  color="white"
+                  text="#E0C4F2"
+                  border="#E0C4F2"
                   count={3000}
                   maximumValue={100}
+                  position="right"
                 />
               </StyledView>
               <StyledView>
-                <Badge color="pink" count={0} maximumValue={0} showZero />
+                <Badge 
+                  text= "white" 
+                  color="#5C73F2" 
+                  border="#5C73F2" 
+                  count={0} 
+                  maximumValue={0} 
+                  showZero 
+                  position="left"
+                />
               </StyledView>
             </ShowContainer>
           </View>
@@ -83,13 +95,25 @@ const Badge2 = (): React.ReactElement => {
           <View>
             <StyledTitle>Badge 3</StyledTitle>
             <StyledView>
-              <Badge color="blue" count={0} maximumValue={0} />
+              <Badge 
+                color="white" 
+                count={20} 
+                maximumValue={0}
+                position="right"/>
             </StyledView>
           </View>
           <View style={{ marginTop: 50 }}>
             <StyledTitle style={{ marginBottom: 10 }}>Badge 4</StyledTitle>
             <StyledView>
-              <Badge color="red" count={0} maximumValue={0} showZero />
+              <Badge 
+                border="#0B42FF" 
+                text="#0B42FF"
+                color="white" 
+                count={0} 
+                maximumValue={0} 
+                showZero 
+                position="left"
+              />
             </StyledView>
           </View>
         </Container>
