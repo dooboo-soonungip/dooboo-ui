@@ -1,86 +1,140 @@
-import React, { FC, useRef } from 'react';
+import React, { FC } from 'react';
+import { StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 
-interface badgeProps {
+export interface BadgeProps {
   count?: number;
   color?: string;
-  maximumValue?: number;
+  maximumCount?: number;
   showZero?: boolean;
   opacityVisible?: boolean;
+  variant?: string;
+  position?: string;
+  border?: string;
+  textColor?: string;
 }
 
-// TODO: Android , IOS 스타일 매기는 기준이 달라서 조사하는 것도 좋을듯!
+interface StyleProps {
+  color?: string;
+  opacity?: number;
+  position?: string;
+  border?: string;
+  textColor?: string;
+}
 
 const StyledView = styled.View`
   position: absolute;
-  top: -10px;
-  right: -10px;
+  top: -15px;
+  ${(props: StyleProps): string => props.position!}: -10px;
   width: auto;
-  min-width: 20px;
-  height: 20px;
-  background-color: ${(props: badgeProps): string => props.color!};
-  border-radius: 50;
+  min-width: 45px;
+  height: 45px;
+  border-color: ${(props: StyleProps): string =>
+    props.border ? props.border : '#00ff0000'};
+  border-width: 3px;
+  background-color: ${(props: StyleProps): string => props.color!};
+  border-radius: 50px;
   justify-content: center;
   align-items: center;
-  opacity: ${(props: badgeProps): number =>
-    props.count === 0 ||
-    props.count! <= props.maximumValue! ||
-    !props.opacityVisible
-      ? 1
-      : 0.6};
+  opacity: ${(props: StyleProps): number => props.opacity!};
 `;
 
 const StyledText = styled.Text`
+  color: ${(props: StyleProps): string => props.textColor!};
+  text-align: center;
+  padding: 5px;
   margin-left: 3px;
   margin-right: 3px;
-  color: whitesmoke;
-  text-align: center;
 `;
 
-const Badge: FC<badgeProps> = (props) => {
+const StyledDotView = styled.View`
+  position: absolute;
+  top: -5px;
+  ${(props: StyleProps): string => props.position!}: -5px;
+  width: 20px;
+  height: 20px;
+  background-color: ${(props: StyleProps): string => props.color!};
+  border-radius: 50px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const styles = StyleSheet.create({
+  fontDesign: {
+    fontWeight: '500',
+    fontSize: 20,
+  },
+});
+
+const Badge: FC<BadgeProps> = (props) => {
   const {
-    count = 10,
-    color = 'red',
-    maximumValue = 300,
+    count = 1,
+    color = '#34AFF9',
+    maximumCount = 300,
     showZero,
     opacityVisible = true,
+    variant = 'standard',
+    position = 'right',
+    border,
+    textColor = '#FFFFFF',
   } = props;
 
   if (!showZero) {
-    if (count == 0) return null;
+    if (count === 0) return null;
   }
 
-  return (
-    <StyledView
-      count={count}
-      maximumValue={maximumValue}
-      color={color}
-      opacityVisible={opacityVisible}>
-      <StyledText>
-        {count! <= maximumValue! ? count : maximumValue + '+'}
-      </StyledText>
-    </StyledView>
-  );
+  switch (true) {
+    case variant === 'dot':
+      return <StyledDotView color={color} position={position} />;
+    case maximumCount >= count:
+      return (
+        <StyledView
+          color={color}
+          opacity={1}
+          position={position}
+          border={border}>
+          <StyledText textColor={textColor} style={styles.fontDesign}>
+            {count}
+          </StyledText>
+        </StyledView>
+      );
+    case maximumCount < count && opacityVisible:
+      return (
+        <StyledView
+          color={color}
+          opacity={0.6}
+          position={position}
+          border={border}>
+          <StyledText textColor={textColor} style={styles.fontDesign}>
+            {count + '+'}
+          </StyledText>
+        </StyledView>
+      );
+    case maximumCount < count && !opacityVisible:
+      return (
+        <StyledView
+          color={color}
+          opacity={1}
+          position={position}
+          border={border}>
+          <StyledText textColor={textColor} style={styles.fontDesign}>
+            {count + '+'}
+          </StyledText>
+        </StyledView>
+      );
+    default:
+      return (
+        <StyledView
+          color={color}
+          opacity={1}
+          position={position}
+          border={border}>
+          <StyledText textColor={textColor} style={styles.fontDesign}>
+            {count}
+          </StyledText>
+        </StyledView>
+      );
+  }
 };
-
-// TODO: 기존 코드들인데 삭제하기 아까워서..!
-// const Badge = ({
-//   maximumValue = 0,
-//   count = 0,
-//   color = 'red',
-//   showZero = true,
-// }: badgeProps): React.ReactElement => {
-//   if (!showZero) {
-//     if (count == 0) return null;
-//   }
-
-//   return (
-//     <StyledView count={count} maximumValue={maximumValue} color={color}>
-//       <StyledText>
-//         {count <= maximumValue ? count : maximumValue + '+'}
-//       </StyledText>
-//     </StyledView>
-//   );
-// };
 
 export { Badge };

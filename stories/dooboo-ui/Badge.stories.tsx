@@ -26,7 +26,10 @@ const StyledView: any = styled.View`
   margin: 20px;
   width: 100px;
   height: 100px;
-  background-color: gray;
+  background-color: #BFBFBF
+  border-radius: 12;
+  box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
+  elevation: 1;
 `;
 
 const Badge1 = (): React.ReactElement => {
@@ -48,49 +51,61 @@ const Badge1 = (): React.ReactElement => {
           </View>
 
           <View>
-            <StyledTitle>Badge (showZero,opacityVisible)</StyledTitle>
+            <StyledTitle>Badge (color, count, showZero)</StyledTitle>
+            <ShowContainer>
+              <StyledView>
+                <Badge color="#6B98F2" count={17} />
+              </StyledView>
+              <StyledView>
+                <Badge color="#6B98F2" count={0} showZero />
+              </StyledView>
+            </ShowContainer>
+          </View>
+
+          <View>
+            <StyledTitle>Badge (variant, position)</StyledTitle>
+            <ShowContainer>
+              <StyledView>
+                <Badge variant="dot" color="#ED2939" />
+              </StyledView>
+              <StyledView>
+                <Badge color="#F2B9AC" count={100} position="left" />
+              </StyledView>
+            </ShowContainer>
+          </View>
+
+          <View>
+            <StyledTitle>Badge (maximumCount, opacityVisible)</StyledTitle>
             <ShowContainer>
               <StyledView>
                 <Badge
                   opacityVisible={false}
-                  color="blue"
-                  count={3000}
-                  maximumValue={100}
+                  color="#34AFF9"
+                  count={300}
+                  maximumCount={100}
                 />
               </StyledView>
               <StyledView>
-                <Badge color="pink" count={0} maximumValue={0} showZero />
+                <Badge
+                  opacityVisible={true}
+                  color="#34AFF9"
+                  count={300}
+                  maximumCount={100}
+                />
               </StyledView>
             </ShowContainer>
           </View>
-        </Container>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
 
-const Badge2 = (): React.ReactElement => {
-  return (
-    <SafeAreaView>
-      <ScrollView
-        contentContainerStyle={{
-          marginTop: 8,
-          alignSelf: 'stretch',
-          paddingHorizontal: 20,
-          paddingVertical: 100,
-        }}>
-        <Container>
           <View>
-            <StyledTitle>Badge 3</StyledTitle>
-            <StyledView>
-              <Badge color="blue" count={0} maximumValue={0} />
-            </StyledView>
-          </View>
-          <View style={{ marginTop: 50 }}>
-            <StyledTitle style={{ marginBottom: 10 }}>Badge 4</StyledTitle>
-            <StyledView>
-              <Badge color="red" count={0} maximumValue={0} showZero />
-            </StyledView>
+            <StyledTitle>Badge (border, textColor)</StyledTitle>
+            <ShowContainer>
+              <StyledView>
+                <Badge color="#91AAF2" border="#F2B9AC" count={37} />
+              </StyledView>
+              <StyledView>
+                <Badge color="white" border="#F2B9AC" textColor="#F2B9AC" count={50} />
+              </StyledView>
+            </ShowContainer>
           </View>
         </Container>
       </ScrollView>
@@ -106,25 +121,22 @@ export default {
 };
 
 export const toStorybook1 = (): ReactElement => <Badge1 />;
-export const toStorybook2 = (): ReactElement => <Badge2 />;
+// export const toStorybook2 = (): ReactElement => <Badge2 />;
 
 toStorybook1.story = {
-  name: 'Badge',
-  notes: 'Basic TextInput style',
+  name: 'default',
+  notes: 'Basic Badge style',
 };
-toStorybook2.story = {
-  name: 'Badge2',
-  notes: 'You can change the label position.',
-};
+// toStorybook2.story = {
+//   name: 'Badge2',
+//   notes: 'You can change the label position.',
+// };
 
 /**
  * Below are stories for app
  */
 storiesOf('Badge', module)
   .addDecorator(ContainerDeco)
-  .add('Badge11', () => <Badge1 />, {
-    notes: 'Basic TextInput style',
-  })
-  .add('Badge22', () => <Badge2 />, {
-    notes: 'You can change the label position.',
+  .add('default', () => <Badge1 />, {
+    notes: 'Basic Badge style',
   });
